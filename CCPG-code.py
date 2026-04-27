@@ -3,41 +3,41 @@ import torch
 import logging
 from typing import Dict, List, Tuple
 
-# 配置安全与专业的日志记录
+# Configure secure and professional logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - [CCPG Engine] - %(levelname)s: %(message)s')
 
 class ComputableComputePowerGraph:
     """
-    可算力图谱 (CCPG) 核心计算引擎 Demo
-    结合 NetworkX 的拓扑管理与 PyTorch 的张量计算
+    Computable Compute-Power Graph (CCPG) Core Engine Demo
+    Combines NetworkX topology management with PyTorch tensor computation.
     """
     def __init__(self):
-        # 初始化有向图，代表非对称的网络通信环境
+        # Initialize a directed graph representing asymmetric network communication environments
         self.graph = nx.DiGraph()
-        # 超参数定义 (拉格朗日乘子)，用于平衡延迟、经济成本与节点状态
-        self.lambda_cost = torch.tensor(0.4)    # 经济成本权重
-        self.lambda_latency = torch.tensor(0.6) # 网络延迟权重
+        # Hyperparameter definition (Lagrange multipliers) to balance latency, economic cost, and node state
+        self.lambda_cost = torch.tensor(0.4)    # Economic cost weight
+        self.lambda_latency = torch.tensor(0.6) # Network latency weight
 
     def add_compute_node(self, node_id: str, flops: float, memory: float, power_cost: float, utilization: float):
         """
-        添加计算节点 (如 GPU 服务器)
-        :param node_id: 节点唯一标识
-        :param flops: 理论算力 (TFLOPS)
-        :param memory: 可用显存 (GB)
-        :param power_cost: 实时单位时间金钱/电量成本
-        :param utilization: 当前利用率 (0.0 - 1.0)
+        Add a compute node (e.g., GPU server)
+        :param node_id: Unique identifier for the node
+        :param flops: Theoretical compute capacity (TFLOPS)
+        :param memory: Available VRAM/Memory (GB)
+        :param power_cost: Real-time cost per unit time (money/power)
+        :param utilization: Current utilization rate (0.0 - 1.0)
         """
-        # 严格的输入校验 (工程安全性)
+        # Strict input validation (engineering safety)
         if not (0.0 <= utilization <= 1.0):
             raise ValueError("Utilization must be between 0.0 and 1.0")
             
-        # 将节点属性张量化 (Tensorization)，转入 PyTorch 体系
+        # Tensorize node attributes and integrate into the PyTorch ecosystem
         feature_vector = torch.tensor([flops, memory, power_cost, utilization], dtype=torch.float32)
         
         self.graph.add_node(
             node_id, 
             features=feature_vector,
-            # 提取标量方便常规查询
+            # Extract scalars for convenient routine querying
             memory_available=memory * (1 - utilization),
             flops_available=flops * (1 - utilization),
             cost=power_cost
@@ -46,48 +46,48 @@ class ComputableComputePowerGraph:
 
     def add_network_edge(self, src: str, dst: str, bandwidth: float, latency: float):
         """
-        添加网络链路
-        :param src: 源节点
-        :param dst: 目标节点
-        :param bandwidth: 剩余带宽 (Gbps)
-        :param latency: 链路延迟 (ms)
+        Add a network link (edge)
+        :param src: Source node
+        :param dst: Destination node
+        :param bandwidth: Remaining bandwidth (Gbps)
+        :param latency: Link latency (ms)
         """
-        # 将边属性张量化
+        # Tensorize edge attributes
         edge_vector = torch.tensor([bandwidth, latency], dtype=torch.float32)
         self.graph.add_edge(src, dst, features=edge_vector, latency=latency)
         logging.debug(f"Added Network Edge {src} -> {dst}: {edge_vector.tolist()}")
 
     def _compute_dynamic_weights(self):
         """
-        [核心理论体现] 
-        利用 PyTorch 张量运算，动态计算全图的“可算力复合权重” (Composite Cost)
-        公式: J = λ1 * Node_Cost + λ2 * Edge_Latency
+        [Core Theory Implementation] 
+        Utilize PyTorch tensor operations to dynamically calculate the "Computable Composite Cost" across the entire graph.
+        Formula: J = λ1 * Node_Cost + λ2 * Edge_Latency
         """
         for u, v, data in self.graph.edges(data=True):
-            # 获取目标节点的算力成本张量 (索引 2 是 power_cost)
+            # Retrieve the compute cost tensor of the target node (index 2 is power_cost)
             node_cost = self.graph.nodes[v]['features'][2]
-            # 获取链路的延迟张量 (索引 1 是 latency)
+            # Retrieve the latency tensor of the edge (index 1 is latency)
             edge_latency = data['features'][1]
             
-            # 使用 PyTorch 计算复合目标函数
-            # 这里利用了 autograd 机制的潜力，虽然在此 demo 中是正向传播
+            # Calculate the composite objective function using PyTorch
+            # This leverages the potential of the autograd mechanism, though it is only forward propagation in this demo
             dynamic_weight = (self.lambda_cost * node_cost) + (self.lambda_latency * edge_latency)
             
-            # 将算出的张量标量化，存入图的权重属性中供寻优算法使用
+            # Scalarize the computed tensor and store it in the graph's weight attribute for the optimization algorithm
             self.graph[u][v]['dynamic_weight'] = dynamic_weight.item()
 
     def optimize_task_routing(self, src_node: str, required_memory: float, required_flops: float) -> Tuple[List[str], float]:
         """
-        约束寻优：在满足算力和显存约束下，计算最优的算力分发路径
-        :param src_node: 任务发起的源节点 (如用户的网关)
-        :param required_memory: 任务所需的最小显存 (GB)
-        :param required_flops: 任务所需的最小算力 (TFLOPS)
+        Constrained optimization: Calculate the optimal compute routing path while satisfying compute and memory constraints.
+        :param src_node: Source node initiating the task (e.g., user gateway)
+        :param required_memory: Minimum required VRAM/Memory for the task (GB)
+        :param required_flops: Minimum required compute capacity for the task (TFLOPS)
         """
-        # 1. 触发张量计算，更新全局最新的动态权重
+        # 1. Trigger tensor computation to update the latest global dynamic weights
         self._compute_dynamic_weights()
         
-        # 2. 生成满足硬件约束的物理子图 (SubGraph)
-        # 过滤掉算力或显存不足的节点，这体现了物理设施强约束性
+        # 2. Generate a physical subgraph satisfying hardware constraints
+        # Filter out nodes with insufficient compute or memory, reflecting strict physical infrastructure constraints
         valid_nodes = [
             n for n, attr in self.graph.nodes(data=True)
             if (attr['memory_available'] >= required_memory and 
@@ -95,7 +95,7 @@ class ComputableComputePowerGraph:
         ]
         subgraph = self.graph.subgraph(valid_nodes)
         
-        # 3. 在过滤后的可算力子图上寻找全局最优路径
+        # 3. Search for the global optimal path on the filtered computable subgraph
         best_path = []
         min_total_cost = float('inf')
         target_compute_node = None
@@ -105,7 +105,7 @@ class ComputableComputePowerGraph:
                 continue
             
             try:
-                # 基于动态张量权重 (dynamic_weight) 进行最短路径寻优
+                # Perform shortest path optimization based on dynamic tensor weights (dynamic_weight)
                 cost = nx.shortest_path_length(subgraph, source=src_node, target=target, weight='dynamic_weight')
                 if cost < min_total_cost:
                     min_total_cost = cost
@@ -123,30 +123,30 @@ class ComputableComputePowerGraph:
 
 
 # ==========================================
-# 场景模拟：跨地域算力调度 (Demo 运行脚本)
+# Scenario Simulation: Cross-regional compute scheduling (Demo Execution Script)
 # ==========================================
 if __name__ == "__main__":
     logging.info("Initializing Computable Compute-Power Graph (CCPG)...")
     ccpg = ComputableComputePowerGraph()
 
-    # 1. 构建物理节点 (例如：东数西算的三个智算中心)
-    # 参数: ID, FLOPS, Memory(GB), Cost(美元/时), 负载率
-    ccpg.add_compute_node("Gateway_Beijing", flops=10, memory=64, power_cost=2.0, utilization=0.9) # 拥挤且昂贵
-    ccpg.add_compute_node("Node_Ningxia", flops=500, memory=1024, power_cost=0.5, utilization=0.2) # 便宜，空闲
-    ccpg.add_compute_node("Node_Guizhou", flops=800, memory=2048, power_cost=0.4, utilization=0.4) # 更便宜，算力强
+    # 1. Construct physical nodes (e.g., three intelligent compute centers in an East-Data-West-Compute scenario)
+    # Parameters: ID, FLOPS, Memory(GB), Cost($/hr), Utilization
+    ccpg.add_compute_node("Gateway_Beijing", flops=10, memory=64, power_cost=2.0, utilization=0.9) # Congested and expensive
+    ccpg.add_compute_node("Node_Ningxia", flops=500, memory=1024, power_cost=0.5, utilization=0.2) # Cheap, idle
+    ccpg.add_compute_node("Node_Guizhou", flops=800, memory=2048, power_cost=0.4, utilization=0.4) # Cheaper, powerful compute
 
-    # 2. 构建通信拓扑 (光纤网络)
-    # 参数: SRC, DST, Bandwidth(Gbps), Latency(ms)
+    # 2. Construct communication topology (fiber-optic network)
+    # Parameters: SRC, DST, Bandwidth(Gbps), Latency(ms)
     ccpg.add_network_edge("Gateway_Beijing", "Node_Ningxia", bandwidth=100, latency=15.0)
     ccpg.add_network_edge("Gateway_Beijing", "Node_Guizhou", bandwidth=100, latency=35.0)
     ccpg.add_network_edge("Node_Ningxia", "Node_Guizhou", bandwidth=400, latency=10.0)
 
-    # 3. 提交大型 AI 训练任务请求
+    # 3. Submit a large AI training task request
     logging.info("Submitting AI Training Task (Requires: 500GB Memory, 300 TFLOPS)")
     task_memory = 500.0
     task_flops = 300.0
 
-    # 4. 执行可算力图谱引擎计算
+    # 4. Execute the CCPG engine computation
     best_path, cost = ccpg.optimize_task_routing(
         src_node="Gateway_Beijing", 
         required_memory=task_memory, 
