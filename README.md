@@ -1,7 +1,7 @@
 # 🌐 Computable Compute-Power Graph (CCPG)
 **Formal Theory, Empirical Validation, and Tractability Analysis for Dynamic Heterogeneous Compute Scheduling**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19828430.svg)](https://doi.org/10.5281/zenodo.19828430) [![arXiv](https://img.shields.io/badge/arXiv-2X04.XXXXX-b31b1b.svg)](https://arxiv.org/abs/2X04.XXXXX) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19911961.svg)](https://doi.org/10.5281/zenodo.19911961) [![arXiv](https://img.shields.io/badge/arXiv-2X04.XXXXX-b31b1b.svg)](https://arxiv.org/abs/2X04.XXXXX) [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
