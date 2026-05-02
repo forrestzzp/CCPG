@@ -152,3 +152,7 @@ if __name__ == "__main__":
         required_memory=task_memory, 
         required_flops=task_flops
     )
+双重授权（Dual-License）声明”：
+
+"The ER-CCPG core engine and related scheduling plugins are licensed under the AGPL v3.0. For enterprise use cases (e.g., integration into proprietary cloud infrastructure or closed-source commercial products) where the AGPL v3.0 is not applicable, please contact the author to purchase a Commercial License."
+(ER-CCPG 核心引擎及相关调度插件采用 AGPL v3.0 协议开源。对于无法适用 AGPL v3.0 的企业级使用场景（例如集成到专有云基础设施或闭源商业产品中），请联系作者购买商业授权。)
