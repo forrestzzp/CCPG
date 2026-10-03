@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineAgentOS - 智能代理操作系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #fafafa;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        /* Navigation */
+        nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #333;
+            transition: background 0.3s ease;
+        }
+
+        nav a:hover {
+            background: #f0f0f0;
+            color: #667eea;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+            background: white;
+            margin: 40px 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .feature-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        }
+
+        .about h2 {
+            font-size: 2.2em;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .about p {
+            font-size: 1.05em;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* Tech Stack */
+        .tech-stack {
+            padding: 80px 20px;
+            background: white;
+        }
+
+        .tech-stack h2 {
+            text-align: center;
+            font-size: 2.2em;
+            margin-bottom: 50px;
+            color: #333;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .tech-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .tech-item h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .tech-item p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            margin: 0 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .hero h2 {
+                font-size: 1.8em;
+            }
+
+            .features h2, .tech-stack h2, .about h2 {
+                font-size: 1.6em;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav li {
+                border-bottom: 1px solid #eee;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>CineAgentOS</h1>
+        <p>智能代理操作系统 | 基于 CCPG 框架的新一代AI代理平台</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#features">功能特性</a></li>
+            <li><a href="#about">关于项目</a></li>
+            <li><a href="#tech">技术栈</a></li>
+            <li><a href="#contact">联系我们</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>下一代AI代理平台</h2>
+            <p>CineAgentOS 建立在 CCPG（可算力图谱）框架之上，为异构计算环境提供统一的智能代理管理和调度系统，支持 GPU、TPU、NPU 等多种计算资源的高效利用。</p>
+            <div class="cta-buttons">
+                <a href="#features" class="btn btn-primary">了解更多</a>
+                <a href="https://github.com/forrestzzp/CCPG" class="btn btn-secondary">访问 GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2>核心功能</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>🎬 多代理编排</h3>
+                    <p>支持复杂的多代理工作流编排，实现代理之间的协作和通信，构建分布式智能系统。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💻 异构资源管理</h3>
+                    <p>无缝集成 CCPG 框架，统一管理 GPU、TPU、NPU 等多种计算资源，实现自适应资源调度。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔄 动态任务调度</h3>
+                    <p>智能任务队列和负载均衡，根据资源状态和任务优先级进行动态调度，提升系统效率。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📊 实时监控</h3>
+                    <p>完整的系统监控面板，实时追踪代理状态、资源利用率、任务执行情况。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔐 安全隔离</h3>
+                    <p>提供容器化和虚拟化支持，确保代理执行环境的安全性和资源隔离。</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🧩 可扩展架构</h3>
+                    <p>模块化设计，支持自定义代理和扩展插件，轻松集成第三方服务和算法。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>关于项目</h2>
+            <p>
+                CineAgentOS 是 CCPG（Computable Compute-Power Graph，可算力图谱）框架的重要组成部分。
+                在 CCPG 提供的形式化可计算拓扑网络基础之上，CineAgentOS 为分布式异构计算环境设计了高效的智能代理管理层。
+            </p>
+            <p>
+                项目的设计初衷是解决当前 AI 系统面临的关键挑战：
+            </p>
+            <ul style="margin-left: 20px; color: #666; line-height: 2;">
+                <li>✓ 多种计算设备（GPU、TPU、NPU）的统一管理与调度</li>
+                <li>✓ 复杂工作流中多个 AI 代理的协作与通信</li>
+                <li>✓ 大规模分布式环境下的性能优化和成本控制</li>
+                <li>✓ 提供一致、可靠的执行保障</li>
+            </ul>
+            <p style="margin-top: 20px;">
+                通过 CineAgentOS，开发者和企业可以快速构建高效、可靠的分布式 AI 应用，充分利用异构计算资源，加速人工智能的实际应用落地。
+            </p>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack" id="tech">
+        <div class="container">
+            <h2>技术栈</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <h3>Python 3.10+</h3>
+                    <p>核心开发语言，提供高效的异步编程支持</p>
+                </div>
+                <div class="tech-item">
+                    <h3>FastAPI</h3>
+                    <p>高性能 Web 框架，用于 API 服务</p>
+                </div>
+                <div class="tech-item">
+                    <h3>Kubernetes</h3>
+                    <p>容器编排平台，支持大规模分布式部署</p>
+                </div>
+                <div class="tech-item">
+                    <h3>gRPC</h3>
+                    <p>高效的分布式通信协议</p>
+                </div>
+                <div class="tech-item">
+                    <h3>CCPG Framework</h3>
+                    <p>可算力图谱框架，提供底层计算网络支持</p>
+                </div>
+                <div class="tech-item">
+                    <h3>PostgreSQL + Redis</h3>
+                    <p>持久化存储和缓存系统</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <p><strong>CineAgentOS</strong> | 智能代理操作系统</p>
+        <p>Part of <a href="https://github.com/forrestzzp/CCPG">CCPG Framework</a></p>
+        <div class="footer-links">
+            <a href="https://github.com/forrestzzp/CCPG/tree/main/CineAgentOS">GitHub</a>
+            <a href="https://github.com/forrestzzp">Author</a>
+            <a href="mailto:129501877@qq.com">Email</a>
+        </div>
+        <p style="margin-top: 30px; font-size: 0.9em; color: #999;">
+            © 2026 CineAgentOS. All rights reserved. | Built with 💜 by Forrest Zhang
+        </p>
+    </footer>
+</body>
+</html>
