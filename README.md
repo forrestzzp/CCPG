@@ -14,6 +14,21 @@
 
 By unifying computational capacity, memory, network latency, power cost, and thermal state into a single optimization problem, CCPG shifts infrastructure management from static orchestration (e.g., Kubernetes Best-Fit) to **Cognitive Adaptive Computing**.
 
+## CineAgentOS — AI 原生影视制作项目
+
+CineAgentOS 是 CCPG 生态中面向影视制作的专有产品项目，正在探索如何把项目上下文、创作资产、多模型能力、团队协作、审核与交付连接为连续的生产工作流。项目面向电影、剧集、短剧、广告、动画与虚拟制作团队。
+
+CineAgentOS 采用专有开发模式；此处的公开项目资料不分发 CineAgentOS 应用、核心算法或专有实现。我们欢迎全球范围内的战略投资、制片机构试点、产业与技术生态合作。
+
+**[中英双语项目介绍与合作信息 / Bilingual overview and partnership information](CineAgentOS/README.md)** · [项目页面 / Project page](https://cineagentos-global.zhangzhiping-cn.chatgpt.site/)
+
+### English
+
+CineAgentOS is a proprietary product initiative in the CCPG ecosystem, exploring how project context, creative assets, multi-model capabilities, team collaboration, review, and delivery can connect in a continuous production workflow. It is intended for film, television, short-form drama, advertising, animation, and virtual production teams.
+
+CineAgentOS is developed as a proprietary product. These public materials do not distribute its application, core algorithms, or proprietary implementation. We welcome strategic investment, studio pilots, and industry or technology partnerships worldwide.
+
+
 ## 🧠 Core Theoretical Innovation
 
 The principal value of CCPG lies in the mathematical unification of five historically siloed constraint dimensions:
